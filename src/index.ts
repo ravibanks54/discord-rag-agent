@@ -31,10 +31,10 @@ client.on("messageCreate", async (message) => {
       Authorization: `Bearer ${apiKey}`,
     },
   });
-
   const scoreData = JSON.parse(result.data.response);
-  const reply = `Automod warn(${scoreData.score}): ${scoreData.reason}`;
-  if (scoreData.score > warningThreshold || 30) {
+
+  if (scoreData.score > (warningThreshold || 30)) {
+    const reply = `Automod warn(${scoreData.score}): ${scoreData.reason}`;
     message.reply(reply);
   }
 });
