@@ -87,7 +87,7 @@ client.on("messageCreate", async (message) => {
     process.env.PROMPT_WARNING_THRESHOLD || "",
     10
   );
-  const apiUrl = `https://promptcms.ai/api/v1/partner/ai/execute?prompt_id=${promptId}&fields=${encodeURIComponent(
+  const apiUrl = `https://www.promptcms.ai/api/v1/partner/ai/execute?prompt_id=${promptId}&fields=${encodeURIComponent(
     JSON.stringify({ msg: message.content })
   )}`;
 
