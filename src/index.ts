@@ -20,7 +20,7 @@ client.on("ready", () => {
 
 async function scoreExecution(execution_id: string, affiliate_id: string, score: number) {
   const apiKey = process.env.PROMPTCMS_API_KEY;
-  const apiUrl = 'https://promptcms.ai/api/v1/partner/ai/score';
+  const apiUrl = 'https://www.promptcms.ai/api/v1/partner/ai/score';
 
   const requestData = {
     execution_id: execution_id,
