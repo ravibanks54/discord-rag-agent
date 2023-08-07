@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import {BaseCommandInteraction} from "discord.js";
+import {BaseCommandInteraction, GuildMemberRoleManager} from "discord.js";
 import enabledChannels from "../persistence/enabledChannels";
 
 export const data = new SlashCommandBuilder()
@@ -7,11 +7,17 @@ export const data = new SlashCommandBuilder()
     .setDescription('Enables bot for this channel.');
 
 export async function execute(interaction: BaseCommandInteraction) {
-    console.log(`Enabling for channel ${interaction.channelId}.`)
-    if (await enabledChannels.is_enabled(interaction.guildId!, interaction.channelId)) {
-        await interaction.reply({content: 'I am already enabled for this channel.', ephemeral: true});
+    const memberRoles = interaction.member!.roles as GuildMemberRoleManager;
+    if (memberRoles.cache.some((role: { name: string; }) => role.name === 'Admin')) {
+        console.log(`Enabling for channel ${interaction.channelId}.`)
+        if (await enabledChannels.is_enabled(interaction.guildId!, interaction.channelId)) {
+            await interaction.reply({content: 'I am already enabled for this channel.', ephemeral: true});
+        } else {
+            await enabledChannels.enable(interaction.guildId!, interaction.channelId);
+            await interaction.reply({content: 'Enabled!', ephemeral: true});
+        }
     } else {
-        await enabledChannels.enable(interaction.guildId!, interaction.channelId);
-        await interaction.reply({content: 'Enabled!', ephemeral: true});
+        await interaction.reply({content: 'Only users with the role Admin are allowed to configure me.', ephemeral: true});
     }
+
 }
