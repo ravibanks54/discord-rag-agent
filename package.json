@@ -4,16 +4,31 @@
   "description": "An example integration of a discord auto moderation bot with PromptCMS.",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js"
+    "start": "tsc && node dist/index.js",
+    "build": " tsc --build && npm run sentry:sourcemaps",
+    "clean": "tsc --build --clean",
+    "deployCommands": "tsc && node dist/helpers/deployCommands.js",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org promptcms --project docster ./dist && sentry-cli sourcemaps upload --org promptcms --project docster ./dist"
   },
   "author": "PromptCMS",
   "license": "MIT",
   "dependencies": {
+    "@discordjs/builders": "^1.6.4",
+    "@discordjs/rest": "^2.0.0",
+    "@prisma/client": "^5.1.1",
+    "@sentry/node": "^7.61.1",
     "axios": "^1.4.0",
+    "discord-api-types": "^0.37.51",
     "discord.js": "^13.6.0",
     "dotenv": "^16.3.1",
-    "lru-cache": "^10.0.0",
     "tslib": "^2.3.1",
     "typescript": "^4.6.2"
+  },
+  "devDependencies": {
+    "@sentry/cli": "^2.20.4",
+    "prisma": "^5.1.1",
+    "supabase": "^1.82.6"
   }
 }

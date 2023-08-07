@@ -129,8 +129,10 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-<<<<<<< Updated upstream
 # Idea files
-=======
->>>>>>> Stashed changes
 .idea
+
+Backups
+*.bak
+# Sentry Auth Token
+.sentryclirc
