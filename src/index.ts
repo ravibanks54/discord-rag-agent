@@ -10,8 +10,9 @@ const discordClient = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
 }) as Client;
 
-discordClient.once("ready", () => {
+discordClient.once("ready", async () => {
   console.log(`Logged in as: ${discordClient.user?.tag}`);
+  await discordClient!.user!.setUsername("DocBot");
 });
 
 // Register all handlers.

@@ -1,6 +1,5 @@
 import {Interaction} from "discord.js";
 import commands from "../registries/commandRegistry";
-import enabledChannels from "../persistence/enabledChannels";
 
 export default async (interaction: Interaction) => {
     console.log("Received interaction.");
@@ -16,13 +15,4 @@ export default async (interaction: Interaction) => {
         console.error(error);
         await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     }
-
-    // if (await enabledChannels.is_enabled(interaction.guildId!, interaction.channelId)) {
-    //     console.log("Channel is enabled!")
-    //
-    // } else {
-    //     console.log("Channel is not enabled!")
-    // }
-
-
 }
