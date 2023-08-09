@@ -3,11 +3,12 @@ import messageToExecutionId from "../persistence/messageExecutionMapping";
 import {Message} from "discord.js";
 import enabledChannels from "../persistence/enabledChannels";
 import superagentClient from "../clients/superagent";
+import discordClient from "../index";
 
 export default async (message: Message) => {
     if (message.author.bot) return;
     if (await enabledChannels.is_enabled(message.guildId!, message.channelId!)) {
-        if (message.content.includes("?")) {
+        if (message.content.includes("?") || message.mentions.has(discordClient.user!.id)) {
             console.log("Answering question...")
             // const resultData = await promptCMSClient.execute({question: message.content});
             const result = await superagentClient.execute({input: message.content});

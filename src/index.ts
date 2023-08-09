@@ -12,7 +12,6 @@ const discordClient = new Client({
 
 discordClient.once("ready", async () => {
   console.log(`Logged in as: ${discordClient.user?.tag}`);
-  await discordClient!.user!.setUsername("DocBot");
 });
 
 // Register all handlers.
@@ -23,3 +22,5 @@ for (const [eventName, eventHandler] of eventHandlers) {
 
 
 discordClient.login(process.env.DISCORD_TOKEN);
+
+export default discordClient;
