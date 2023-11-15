@@ -5,7 +5,11 @@ import guildConfig from '../persistence/guildConfig';
 
 export const data = new SlashCommandBuilder()
     .setName('enable')
-    .setDescription('Enables bot for this channel.');
+    .setDescription('Enables bot for the current channel (or a channel of your choice).')
+    .addStringOption(option =>
+        option.setName('channelurl')
+            .setDescription('URL for channel')
+            .setRequired(false));
 
 export async function execute(interaction: BaseCommandInteraction) {
     const memberRoles = interaction.member!.roles as GuildMemberRoleManager;
@@ -14,11 +18,22 @@ export async function execute(interaction: BaseCommandInteraction) {
         if (!guildConfigExists) {
             await interaction.reply({content: 'Please configure me first using the /configure command.', ephemeral: true});
         }
-        console.log(`Enabling for channel ${interaction.channelId}.`)
-        if (await enabledChannels.is_enabled(interaction.guildId!, interaction.channelId)) {
+
+        const channelUrl = interaction.options.get('channelurl');
+
+        let channelIdToEnable = interaction.channelId;
+
+        if (channelUrl) {
+            const url = new URL(channelUrl.value! as string);
+            const pathParts = url.pathname.split('/');
+            channelIdToEnable = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
+        }
+
+        console.log(`Enabling for channel ${channelIdToEnable}.`)
+        if (await enabledChannels.is_enabled(interaction.guildId!, channelIdToEnable)) {
             await interaction.reply({content: 'I am already enabled for this channel.', ephemeral: true});
         } else {
-            await enabledChannels.enable(interaction.guildId!, interaction.channelId);
+            await enabledChannels.enable(interaction.guildId!, channelIdToEnable);
             await interaction.reply({content: 'Enabled!', ephemeral: true});
         }
     } else {
