@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Message} from "discord.js";
 
-interface ExecutionResponse {
+interface PromptExecutionResponse {
     data: {
         execution_id: string;
         challenge: null | string;
@@ -11,13 +11,23 @@ interface ExecutionResponse {
     }
 }
 
+interface AgentExecutionResponse {
+    data: {
+        input: string;
+        chat_history: any;
+        output: string;
+    }
+}
+
 class PromptCMSClient {
     private readonly promptId: string;
+    private readonly agentId: string;
     private readonly apiKey: string;
     private readonly baseApiUrl = 'https://www.promptcms.ai/api/v1/partner/ai';
 
-    constructor(promptId?: string, apiKey?: string) {
+    constructor(promptId?: string, agentId?: string, apiKey?: string) {
         this.promptId = promptId || process.env.PROMPT_ID!;
+        this.agentId = agentId || process.env.PROMPTCMS_AGENT_ID!;
         this.apiKey = apiKey || process.env.PROMPTCMS_API_KEY!;
     }
     public async scoreExecution(execution_id: string, affiliate_id: string, score: number) {
@@ -51,9 +61,24 @@ class PromptCMSClient {
             JSON.stringify(fields)
         )}`;
 
-        const { data: result } = await axios.get<ExecutionResponse>(apiUrl, {
+        const { data: result } = await axios.get<PromptExecutionResponse>(apiUrl, {
             headers: {
                 Authorization: `Bearer ${this.apiKey}`,
+            },
+        });
+        return result;
+    }
+
+    public async invokeAgent(message: string, agentId: string, apiKey: string, sessionId: string | undefined = undefined) {
+        const apiUrl = `${this.baseApiUrl}/agentic`;
+
+        const {data: result} = await axios.post<AgentExecutionResponse>(apiUrl, {
+            message: message,
+            agent_id: agentId,
+            session_id: sessionId,
+        }, {
+            headers: {
+                Authorization: `Bearer ${apiKey}`,
             },
         });
         return result;

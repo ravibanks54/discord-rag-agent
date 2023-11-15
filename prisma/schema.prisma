@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model enabled_channels {
   id         BigInt    @id(map: "enabled_channels_pkey") @default(autoincrement())
   created_at DateTime? @default(now()) @db.Timestamptz(6)
@@ -15,6 +14,7 @@ model enabled_channels {
   channel_id String
 
   @@unique([guild_id, channel_id], map: "enabled_channels_unique_guild_channel")
+  @@index([guild_id])
 }
 
 model message_prompt_execution {
@@ -22,4 +22,14 @@ model message_prompt_execution {
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   message_id String    @unique(map: "message_prompt_execution_unique_message")
   prompt_execution_id String
+}
+
+model guild_config {
+  id         BigInt    @id(map: "guild_config_pkey") @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  guild_id   String
+  api_key    String
+  agent_id   String
+
+  @@unique([guild_id], map: "unique_guild_config")
 }

@@ -40,6 +40,14 @@ class EnabledChannels {
             },
         });
     }
+
+    public async list(guildId: string) {
+        return prisma.enabled_channels.findMany({
+            where: {
+                guild_id: guildId,
+            }
+        })
+    }
 }
 
 export default new EnabledChannels();
