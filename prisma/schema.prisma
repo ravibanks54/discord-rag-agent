@@ -33,3 +33,14 @@ model guild_config {
 
   @@unique([guild_id], map: "unique_guild_config")
 }
+
+model channel_config {
+  id         BigInt    @id(map: "channel_config_pkey") @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  guild_id   String
+  channel_id String
+  api_key    String
+  agent_id   String
+
+  @@unique([guild_id, channel_id], map: "unique_guild_channel_config")
+}
