@@ -23,7 +23,7 @@ class PromptCMSClient {
     private readonly promptId: string;
     private readonly agentId: string;
     private readonly apiKey: string;
-    private readonly baseApiUrl = 'https://omniagent.ai/api/v1/partner/ai';
+    private readonly baseApiUrl = 'https://www.omniagent.ai/api/v1/partner/ai';
 
     constructor(promptId?: string, agentId?: string, apiKey?: string) {
         this.promptId = promptId || process.env.PROMPT_ID!;
