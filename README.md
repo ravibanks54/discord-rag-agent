@@ -1,6 +1,6 @@
-# promptcms-discord-bot-automod-node-ts
+# discord-rag-agent
 
-An example integration of a discord auto moderation and Q&A bot with PromptCMS.
+An example integration of a discord Q&A bot with OmniAgent.
 
 ## Setup
 
